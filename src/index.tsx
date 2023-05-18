@@ -1,5 +1,5 @@
-import {Form} from "@raycast/api";
-import {useState} from "react";
+import { ActionPanel, Action, Form } from "@raycast/api";
+import { useState } from "react";
 
 export default function Command() {
   const [input, setInput] = useState("");
@@ -7,11 +7,21 @@ export default function Command() {
 
   const onTextInputChange = (text: string) => {
     setInput(text);
-    setQuotedInput(text.split("\n").map(line => "> " + line).join("\n"));
-  }
+    if (text === "") {
+      setQuotedInput("");
+    } else {
+      setQuotedInput(text.split("\n").map(line => "> " + line).join("\n"));
+    }
+  };
 
   return (
-    <Form>
+    <Form
+      actions={
+        <ActionPanel>
+          <Action.CopyToClipboard content={quotedInput} />
+        </ActionPanel>
+      }
+    >
       <Form.TextArea
         id="text-input"
         title="Text Input"
